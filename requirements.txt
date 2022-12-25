@@ -1,0 +1,12 @@
+discord
+discord.py
+feedparser==6.0.10
+mcstatus==9.0.4
+py-cord
+py-cord[voice]
+yt-dlp
+aiohttp
+asyncio
+beautifulsoup4
+spotipy
+youtube_search
