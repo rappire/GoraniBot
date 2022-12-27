@@ -513,7 +513,10 @@ class 음악(commands.Cog):
             return
         
         try:
-            playlist[ctx.author.id].pop(int(song))
+            pos = int(title) - 1
+            title = playlist[ctx.author.id][pos]["title"]
+            playlist[ctx.author.id].pop(pos)
+            
         except:
             for i, song in enumerate(playlist[ctx.author.id]):
                 if song["title"] == title:
