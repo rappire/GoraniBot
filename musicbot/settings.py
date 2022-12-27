@@ -94,7 +94,7 @@ class Settings():
 
             if self.config.get(key) == "" or self.config.get(key) == None:
 
-                embed.add_field(name=key, value="Not Set", inline=False)
+                embed.add_field(name=key, value="Not Set")
                 continue
 
             elif key == "start_voice_channel":
@@ -103,11 +103,11 @@ class Settings():
                     for vc in self.guild.voice_channels:
                         if vc.id == self.config.get(key):
                             embed.add_field(
-                                name=key, value=vc.name, inline=False)
+                                name=key, value=vc.name)
                             found = True
                     if found == False:
                         embed.add_field(
-                            name=key, value="Invalid VChannel", inline=False)
+                            name=key, value="Invalid VChannel")
 
                     continue
 
@@ -117,14 +117,14 @@ class Settings():
                     for chan in self.guild.text_channels:
                         if chan.id == self.config.get(key):
                             embed.add_field(
-                                name=key, value=chan.name, inline=False)
+                                name=key, value=chan.name)
                             found = True
                     if found == False:
                         embed.add_field(
-                            name=key, value="Invalid Channel", inline=False)
+                            name=key, value="Invalid Channel")
                     continue
 
-            embed.add_field(name=key, value=self.config.get(key), inline=False)
+            embed.add_field(name=key, value=self.config.get(key))
 
         return embed
 

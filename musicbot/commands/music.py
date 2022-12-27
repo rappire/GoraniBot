@@ -352,7 +352,7 @@ class 음악(commands.Cog):
         # emb = discord.Embed(title='리스트', description = "\u200b", color=discord.Color.blue())
         # for i in range(10):
         #     content = "{}: {}".format(str(i+1), results[i]["title"])
-        #     emb.add_field(name = '\u200b', value = content, inline = False)
+        #     emb.add_field(name = '\u200b', value = content)
         # await ctx.send(embed = emb)
         
         #2번 
@@ -380,7 +380,7 @@ class 음악(commands.Cog):
             return inner_check(m)
         
         try:
-            msg = await self.bot.wait_for(event = "message", check=check, timeout = 20.0)
+            msg = await self.bot.wait_for("message", check=check, timeout = 20.0)
             pos = int(msg.content) - 1
         except asyncio.TimeoutError:
             await ctx.send("타임아웃입니다!")
@@ -427,12 +427,12 @@ class 음악(commands.Cog):
 
     @commands.command(name='재생목록', description="ㅁㄴㅇ", help="ㅁㄴㅇ",aliases=["playlist", "pl"])
     async def _my_song(self, ctx):
-        with open("./config/playlist.pickle","rb") as pl:
-            playlist = pickle.load(pl)
         try:
+            with open("./config/playlist.pickle","rb") as pl:
+                playlist = pickle.load(pl)
             custom_playlist = playlist[ctx.author.id]
         except:
-            print("no playlist")
+            await ctx.send("no playlist")
             return
         content = ""
         for i in range(len(custom_playlist)):
@@ -444,12 +444,12 @@ class 음악(commands.Cog):
     ""
     @commands.command(name='재생목록재생', description="개인 재생목록 재생", help="개인 재생목록 재생",aliases=["pp"])
     async def _my_play(self, ctx):
-        with open("./config/playlist.pickle","rb") as pl:
-            playlist = pickle.load(pl)
         try:
+            with open("./config/playlist.pickle","rb") as pl:
+                playlist = pickle.load(pl)
             custom_playlist = playlist[ctx.author.id]
         except:
-            print("no playlist")
+            await ctx.send("no playlist")
             return
         for i in custom_playlist:
             track = i["url"]
@@ -486,7 +486,46 @@ class 음악(commands.Cog):
         with open("./config/playlist.pickle","wb") as pl:
             pickle.dump(playlist,pl)
         
+    
+    @commands.command(name='재생목록삭제', description="개인 재생목록에 추가", help="개인 재생목록에 추가",aliases=["pop"])
+    async def _my_pop(self, ctx, *, title):
         
+        current_guild = utils.get_guild(self.bot, ctx.message)
+
+        if await utils.play_check(ctx) == False:
+            return
+        
+        if current_guild is None:
+            await ctx.send(config.NO_GUILD_MESSAGE)
+            return
+        try:
+            pl = open("./config/playlist.pickle","rb")
+            playlist = pickle.load(pl)
+            pl.close()
+        except:
+            await ctx.send("재생목록이 없습니다")
+            return
+            
+        try:
+            playlist[ctx.author.id]
+        except:
+            await ctx.send("재생목록이 없습니다")
+            return
+        
+        try:
+            playlist[ctx.author.id].pop(int(song))
+        except:
+            for i, song in enumerate(playlist[ctx.author.id]):
+                if song["title"] == title:
+                    playlist[ctx.author.id].pop(i)
+                    break
+        
+        await ctx.send(title + "을 삭제했습니다.")
+        with open("./config/playlist.pickle","wb") as pl:
+            pickle.dump(playlist,pl)
+    
+    
+    
     async def songplay(self, ctx, track):
         current_guild = utils.get_guild(self.bot, ctx.message)
         audiocontroller = utils.guild_to_audiocontroller[current_guild]

@@ -57,7 +57,7 @@ class Help(commands.Cog):
                 cogs_desc += f'`{cog}` {self.bot.cogs[cog].__doc__}\n'
 
             # adding 'list' of cogs to embed
-            emb.add_field(name='모듈', value=cogs_desc, inline=False)
+            emb.add_field(name='모듈', value=cogs_desc)
 
             # integrating trough uncategorized commands
             commands_desc = ''
@@ -69,7 +69,7 @@ class Help(commands.Cog):
 
             # adding those commands to embed
             if commands_desc:
-                emb.add_field(name='Not belonging to a module', value=commands_desc, inline=False)
+                emb.add_field(name='Not belonging to a module', value=commands_desc)
 
             emb.set_image(url = "https://bunny.jjalbot.com/2018/12/aYow8lwKz/zzal.jpg")
             # setting information about author
@@ -92,7 +92,7 @@ class Help(commands.Cog):
                     for command in self.bot.get_cog(cog).get_commands():
                         # if cog is not hidden
                         if not command.hidden:
-                            emb.add_field(name=f"`{prefix}{command.name}`", value=command.help, inline=False)
+                            emb.add_field(name=f"`{prefix}{command.name}`", value=command.help)
                     # found cog - breaking loop
                     break
 

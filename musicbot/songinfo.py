@@ -29,13 +29,13 @@ class Song():
                 embed.set_thumbnail(url=self.thumbnail)
 
             embed.add_field(name=config.SONGINFO_UPLOADER,
-                            value=self.uploader, inline=False)
+                            value=self.uploader)
 
             if self.duration is not None:
                 embed.add_field(name=config.SONGINFO_DURATION,
-                                value="{}".format(str(datetime.timedelta(seconds=self.duration))), inline=False)
+                                value="{}".format(str(datetime.timedelta(seconds=self.duration))))
             else:
                 embed.add_field(name=config.SONGINFO_DURATION,
-                                value=config.SONGINFO_UNKNOWN_DURATION , inline=False)
+                                value=config.SONGINFO_UNKNOWN_DURATION)
 
             return embed
