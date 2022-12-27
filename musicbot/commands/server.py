@@ -20,7 +20,7 @@ class 기타(commands.Cog):
     @commands.command(name='서버', description=config.HELP_SERVER_LONG, help=config.HELP_SERVER_SHORT)
     async def 서버(self, ctx):
         try:
-            ip = "58.120.8.214:25565"
+            ip = "34.64.154.119:25565"
             server = JavaServer.lookup(ip)
             status = server.status()
             await ctx.send("서버가 열려있습니다!!")
@@ -44,7 +44,7 @@ class 기타(commands.Cog):
         image = discord.File("temp.png", filename="image.png")
         embed = discord.Embed(title=feed.entries[0].title, color=0x00ff56)
         embed.set_image(url="attachment://image.png")
-        embed.add_field(name="링크", value=feed.entries[0].link, inline=True)
+        embed.add_field(name="링크", value=feed.entries[0].link)
         await ctx.send(embed=embed, file=image)
         
         

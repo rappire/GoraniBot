@@ -137,15 +137,15 @@ class 음악(commands.Cog):
             config.MAX_SONG_PRELOAD = 25
 
         embed = discord.Embed(title=":scroll: Queue [{}]".format(
-            len(playlist.playque)), color=config.EMBED_COLOR, inline=False)
+            len(playlist.playque)), color=config.EMBED_COLOR)
 
         for counter, song in enumerate(list(playlist.playque)[:config.MAX_SONG_PRELOAD], start=1):
             if song.info.title is None:
                 embed.add_field(name="{}.".format(str(counter)), value="[{}]({})".format(
-                    song.info.webpage_url, song.info.webpage_url), inline=False)
+                    song.info.webpage_url, song.info.webpage_url))
             else:
                 embed.add_field(name="{}.".format(str(counter)), value="[{}]({})".format(
-                    song.info.title, song.info.webpage_url), inline=False)
+                    song.info.title, song.info.webpage_url))
 
         await ctx.send(embed=embed)
 
