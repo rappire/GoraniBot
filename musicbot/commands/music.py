@@ -6,6 +6,7 @@ from discord.ext import commands
 from musicbot import linkutils, utils
 from youtube_search import YoutubeSearch
 import pickle
+import musicbot.rotate_emb as rotate_emb
 
 
 class 음악(commands.Cog):
@@ -127,27 +128,29 @@ class 음악(commands.Cog):
             await ctx.send(config.NO_GUILD_MESSAGE)
             return
         if current_guild.voice_client is None or not current_guild.voice_client.is_playing():
-            await ctx.send("Queue is empty :x:")
+            await ctx.send("재생중이지 않습니다.")
             return
 
         playlist = utils.guild_to_audiocontroller[current_guild].playlist
-
-        # Embeds are limited to 25 fields
-        if config.MAX_SONG_PRELOAD > 25:
-            config.MAX_SONG_PRELOAD = 25
-
-        embed = discord.Embed(title=":scroll: Queue [{}]".format(
-            len(playlist.playque)), color=config.EMBED_COLOR)
-
-        for counter, song in enumerate(list(playlist.playque)[:config.MAX_SONG_PRELOAD], start=1):
+        
+        if len(playlist) == 0:
+            embed = discord.Embed(title=":scroll: Queue [{}]".format(
+                len(playlist.playque)), color=config.EMBED_COLOR)
+            await ctx.send(embed=embed)
+            return
+        
+        embeds = []
+        for counter, song in enumerate(list(playlist.playque)):
+            if counter % 5 == 0:
+                embeds.append(discord.Embed(title=":scroll: Queue [{}]\n:scroll: Page : [{}]".format(
+                len(playlist.playque), counter // 5 + 1), color=config.EMBED_COLOR))
             if song.info.title is None:
-                embed.add_field(name="{}.".format(str(counter)), value="[{}]({})".format(
-                    song.info.webpage_url, song.info.webpage_url))
+                embeds[counter // 5].add_field(name="{}.".format(str(counter + 1)), value="[{}]({})".format(
+                    song.info.webpage_url, song.info.webpage_url) , inline = False)
             else:
-                embed.add_field(name="{}.".format(str(counter)), value="[{}]({})".format(
-                    song.info.title, song.info.webpage_url))
-
-        await ctx.send(embed=embed)
+                embeds[counter // 5].add_field(name="{}.".format(str(counter  + 1)), value="[{}]({})".format(
+                    song.info.title, song.info.webpage_url) , inline = False)
+        await rotate_emb.Simple().start(ctx, pages=embeds)
 
     @commands.command(name='정지', description=config.HELP_STOP_LONG, help=config.HELP_STOP_SHORT, aliases=['st', "stop"])
     async def _stop(self, ctx):
@@ -563,7 +566,8 @@ class 음악(commands.Cog):
 
         elif song.origin == linkutils.Origins.Playlist:
             await ctx.send(config.SONGINFO_PLAYLIST_QUEUED)
-
+    
+        
 
 async def setup(bot):
     await bot.add_cog(음악(bot))
