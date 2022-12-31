@@ -46,7 +46,7 @@ class Audio:
             return
     
     async def disconnect(self):
-        await self.guild.voice_client.stop()
+        self.guild.voice_client.stop()
         await self.guild.voice_client.disconnect(force=True)
         
     async def push_queue(self, ctx, title):

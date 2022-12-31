@@ -23,3 +23,13 @@ def check_playlist(url):
     if "playlist?list=" in url:
         return True
     return False
+
+#메세지로부터 서버를 알려줌
+def get_guild(bot, message):
+    if message.guild is not None:
+        return message.guild
+    for guild in bot.guilds:
+        for channel in guild.voice_channels:
+            if message.author in channel.members:
+                return guild
+    return None
