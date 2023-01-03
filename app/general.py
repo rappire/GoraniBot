@@ -74,9 +74,7 @@ class 기타(commands.Cog):
             if message.content in self.reply:
                 await message.channel.send(message.content)
 
-    @commands.command(
-        name="추가", description="추가로 반응할 말을 추가합니다", help="추가로 반응할 말을 추가합니다"
-    )
+    @commands.command(name="추가")
     async def 추가(self, ctx, *, word: str):
         if word in self.reply:
             await ctx.send(word + "가 리스트에 있습니다.")
@@ -86,9 +84,7 @@ class 기타(commands.Cog):
             with open("./config/wordlist.pickle", "wb") as fw:
                 pickle.dump(self.reply, fw)
 
-    @commands.command(
-        name="반응", description="반응하는 말 리스트를 보여줍니다.", help="반응하는 말 리스트를 보여줍니다."
-    )
+    @commands.command(name="반응")
     async def 반응(self, ctx):
         content = ""
         for i in self.reply:
@@ -98,9 +94,7 @@ class 기타(commands.Cog):
         )
         await ctx.send(embed=emb)
 
-    @commands.command(
-        name="반응삭제", description="반응 리스트에서 삭제합니다.", help="반응 리스트에서 삭제합니다."
-    )
+    @commands.command(name="반응삭제")
     async def 삭제(self, ctx, *, word: str):
         if word in self.reply:
             self.reply.remove(word)
