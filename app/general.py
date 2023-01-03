@@ -51,7 +51,7 @@ class 기타(commands.Cog):
     @commands.command(name="서버")
     async def 서버(self, ctx):
         try:
-            ip = "58.120.8.214:25565"
+            ip = "34.64.154.119:25565"
             server = JavaServer.lookup(ip)
             status = server.status()
             await ctx.send("서버가 열려있습니다!!")
