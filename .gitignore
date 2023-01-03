@@ -1,8 +1,5 @@
-test.py
 __pycache__
 config/config.py
 govenv/
-config/playlist.pickle
-config/wordlist.pickle
 
 

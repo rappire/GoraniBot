@@ -21,6 +21,5 @@ class Song():
             embed.add_field(name="길이", value=f"{str(datetime.timedelta(seconds=self.duration))}", inline=True)
         if self.requester is not None:
             embed.add_field(name="요청자", value=self.requester, inline=True)
-        
         return embed
         
