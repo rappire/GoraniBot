@@ -47,6 +47,11 @@ class Audio:
             return
 
     async def disconnect(self):
+        self.playlist.empty()
+        try:
+            self.timer.cancel()
+        except:
+            pass
         self.current_song = None
         self.guild.voice_client.stop()
         await self.guild.voice_client.disconnect(force=True)
@@ -109,6 +114,8 @@ class Audio:
         self.bot.loop.create_task(self.play())
 
     async def set_timer(self):
+        if self.guild.voice_client == None:
+            return
         if len(self.guild.voice_client.channel.voice_states) == 1:
             await self.disconnect()
             return
@@ -126,6 +133,10 @@ class Audio:
 
     async def ak(self, num):
         seed()
+        try:
+            self.timer.cancel()
+        except:
+            pass
         for i in range(num):
             while self.guild.voice_client.is_playing():
                 time = uniform(0.2, 0.7)
@@ -134,5 +145,6 @@ class Audio:
             self.guild.voice_client.play(discord.FFmpegPCMAudio(source="config/AK.mp3"))
         while self.guild.voice_client.is_playing():
             await asyncio.sleep(1)
+
         self.timer = None
         await self.disconnect()
