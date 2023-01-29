@@ -27,7 +27,7 @@ class 기타(commands.Cog):
         guild_audio = audio_list[guild]
         # 음성 서버 접속
         await guild_audio.connect(ctx)
-        # 큐에 집어넣기
+        # 악
         await guild_audio.ak(num)
 
     @commands.command(aliases=["뽑기"])
@@ -51,7 +51,7 @@ class 기타(commands.Cog):
     @commands.command(name="서버")
     async def 서버(self, ctx):
         try:
-            ip = "34.64.154.119:25565"
+            ip = "58.120.8.214:25565"
             server = JavaServer.lookup(ip)
             status = server.status()
             await ctx.send("서버가 열려있습니다!!")

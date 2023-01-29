@@ -132,6 +132,7 @@ class Audio:
         return "https://www.youtube.com/watch?v={}".format(videocode)
 
     async def ak(self, num):
+        self.guild.voice_client.stop()
         seed()
         try:
             self.timer.cancel()
