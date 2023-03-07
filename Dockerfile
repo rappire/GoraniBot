@@ -1,5 +1,5 @@
 FROM python:3.10
-COPY ./GoraniBot .
+COPY . .
 RUN apt-get update 
 RUN apt-get -y install ffmpeg
 RUN apt-get -y install libffi-dev
