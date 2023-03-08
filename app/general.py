@@ -1,6 +1,7 @@
 from discord.ext import commands
 from random import shuffle
 import discord
+from config.config import AI_TOKEN
 from app.server import audio_list
 from app.utility import get_guild
 import pickle
@@ -110,7 +111,7 @@ class 기타(commands.Cog):
     async def chatgpt(self, ctx, *sentneces: str):
         if self.check:
             return
-        KEY = "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"
+        KEY = AI_TOKEN
         openai.api_key = KEY
         model = "gpt-3.5-turbo"
         sentnece = " ".join(sentneces)
