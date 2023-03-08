@@ -121,7 +121,7 @@ class 기타(commands.Cog):
                 {"role": "user", "content": sentnece},
             ]
             chat = openai.ChatCompletion.create(model=model, messages=messages)
-        reply = sentnece + "에 대한 답입니다 : \n" + chat.choices[0].message.content
+        reply = sentnece + "에 대한 답입니다 : \n\n" + chat.choices[0].message.content + "\n"
         await ctx.send(reply)
 
     @commands.command(name="gpton")
