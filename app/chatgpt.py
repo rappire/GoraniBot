@@ -49,17 +49,19 @@ class AI(commands.Cog):
                     "content": "You are a kind helpful assistant.",
                 }
             ]
+
         loading_message = await ctx.channel.send("***답변을 생각중입니다...***")
         self.sentence[author].append({"role": "user", "content": sentence})
         reply = await self.fetch(sentence, author)
+
+        if author not in self.wordcount:
+            self.wordcount[author] = 0
+        self.wordcount[author] += len(reply) + len(sentence)
+        if self.wordcount[author] >= 7000:
+            self.sentence[author] = self.sentence[author][1:]
+
         await ctx.channel.send(reply)
         await loading_message.delete()
-        sum = 0
-        for i in self.sentence[author]:
-            sum += len(i)
-        while sum > 10000:
-            sum -= len(self.sentence[author][0])
-            self.sentence[author] = self.sentence[author][1:]
 
     @commands.command(name="gpton")
     async def controlgpt(self, ctx):
