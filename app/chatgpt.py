@@ -58,7 +58,9 @@ class AI(commands.Cog):
             self.wordcount[author] = 0
         self.wordcount[author] += len(reply) + len(sentence)
         if self.wordcount[author] >= 7000:
-            self.sentence[author] = self.sentence[author][1:]
+            self.wordcount[author] -= len(self.sentence[author][0]["content"])
+            self.wordcount[author] -= len(self.sentence[author][1]["content"])
+            self.sentence[author] = self.sentence[author][2:]
 
         await ctx.channel.send(reply)
         await loading_message.delete()
