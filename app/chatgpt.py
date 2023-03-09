@@ -57,6 +57,7 @@ class AI(commands.Cog):
         if author not in self.wordcount:
             self.wordcount[author] = 0
         self.wordcount[author] += len(reply) + len(sentence)
+        print(self.wordcount[author])
         if self.wordcount[author] >= 7000:
             self.wordcount[author] -= len(self.sentence[author][0]["content"])
             self.wordcount[author] -= len(self.sentence[author][1]["content"])
