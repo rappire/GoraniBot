@@ -1,12 +1,10 @@
 from discord.ext import commands
 from random import shuffle
 import discord
-from config.config import AI_TOKEN
 from app.server import audio_list
 from app.utility import get_guild
 import pickle
 from mcstatus import JavaServer
-import openai
 
 
 class 기타(commands.Cog):
@@ -14,7 +12,6 @@ class 기타(commands.Cog):
         self.bot = bot
         with open("./config/wordlist.pickle", "rb") as fr:
             self.reply = pickle.load(fr)
-        self.check = False
 
     @commands.command(aliases=["악"])
     async def ak(self, ctx, *, num):
@@ -71,11 +68,11 @@ class 기타(commands.Cog):
         except:
             await ctx.send("서버가 닫혀있습니다!!")
 
-    # @commands.Cog.listener()
-    # async def on_message(self, message):
-    #     if message.author.bot == False:
-    #         if message.content in self.reply:
-    #             await message.channel.send(message.content)
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if message.author.bot == False:
+            if message.content in self.reply:
+                await message.channel.send(message.content)
 
     @commands.command(name="추가")
     async def 추가(self, ctx, *, word: str):
@@ -106,32 +103,6 @@ class 기타(commands.Cog):
                 pickle.dump(self.reply, fw)
         else:
             await ctx.send(word + "가 리스트에 없습니다.")
-
-    @commands.command(name="질문")
-    async def chatgpt(self, ctx, *sentneces: str):
-        if self.check:
-            return
-        KEY = AI_TOKEN
-        openai.api_key = KEY
-        model = "gpt-3.5-turbo"
-        sentnece = " ".join(sentneces)
-        if sentnece:
-            messages = [
-                {"role": "system", "content": "You are a kind helpful assistant."},
-                {"role": "user", "content": sentnece},
-            ]
-            chat = openai.ChatCompletion.create(model=model, messages=messages)
-        reply = sentnece + "에 대한 답입니다 : \n\n" + chat.choices[0].message.content + "\n\n"
-        await ctx.send(reply)
-
-    @commands.command(name="gpton")
-    async def controlgpt(self, ctx):
-        if self.check:
-            self.check = False
-            await ctx.send("GPT on")
-        else:
-            self.check = True
-            await ctx.send("GPT off")
 
 
 async def setup(bot):
